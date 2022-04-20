@@ -1,5 +1,6 @@
 const express = require('express')
 const axios = require('axios')
+const DB_CONFIG = process.env.DB_CONFIG
 const Pool = require('pg').Pool
 const cors = require('cors');
 
