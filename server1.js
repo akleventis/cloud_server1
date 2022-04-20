@@ -59,7 +59,7 @@ app.get('/send', async (req, res) => {
 
     try {
         // send move to server 2
-        let gameResult = await axios.post('http://localhost:8081', {move: move})
+        let gameResult = await axios.post('https://cloud-server-2-cloud-final.apps-crc.testing/', {move: move})
         await updateDB(gameResult.data)
         res.send(gameResult.data)
     } catch (err) {
