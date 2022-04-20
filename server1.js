@@ -4,11 +4,20 @@ const axios = require('axios')
 const DB_CONFIG = process.env.DB_CONFIG
 const Pool = require('pg').Pool
 const cors = require('cors');
+const url = 'http://localhost:8081'
+const openShiftURL = 'https://cloud-server-2-cloud-final.apps-crc.testing/'
 
 var cn = new Pool({
     connectionString: DB_CONFIG,
     ssl: false,
 })
+
+// var cn = new Pool({
+//     host: 'localhost',
+//     user: 'aleventis',
+//     port: '5432',
+//     database: 'cloud_final',
+// })
 
 const app = express()
 app.use(cors({origin: true}))
@@ -60,7 +69,7 @@ app.get('/send', async (req, res) => {
 
     try {
         // send move to server 2
-        let gameResult = await axios.post('https://cloud-server-2-cloud-final.apps-crc.testing/', {move: move})
+        let gameResult = await axios.post(openShiftURL, {move: move})
         await updateDB(gameResult.data)
         res.send(gameResult.data)
     } catch (err) {
@@ -71,6 +80,9 @@ app.get('/send', async (req, res) => {
 // retrieve database data and return to client
 app.get('/results', async (req, res) => {
     const results = await getGameData()
+    if (results[0].name === "server2"){
+        [results[0], results[1]] = [results[1], results[0]]
+    }
     res.send(results)
 })
 
