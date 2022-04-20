@@ -4,10 +4,8 @@ const Pool = require('pg').Pool
 const cors = require('cors');
 
 var cn = new Pool({
-    host: "localhost",
-    port: 5432,
-    database: "cloud_final",
-    user: 'aleventis'
+    connectionString: DB_CONFIG,
+    ssl: false,
 })
 
 const app = express()
