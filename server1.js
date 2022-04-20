@@ -26,7 +26,11 @@ const port = 8082
 const getGameData = async () => {
     try {
         const r = await cn.query(`SELECT * FROM rpc`);
-        if (r.rows[0].name === "server2"){
+        
+        r.rows[0].name = r.rows[0].name.trim()
+        r.rows[1].name = r.rows[0].name.trim()
+
+        if (r.rows[0].name.trim() === "server2"){
             [r.rows[0], r.rows[1]] = [r.rows[1], r.rows[0]]
         }
         return r.rows
@@ -80,9 +84,6 @@ app.get('/send', async (req, res) => {
 // retrieve database data and return to client
 app.get('/results', async (req, res) => {
     const results = await getGameData()
-    if (results[0].name === "server2"){
-        [results[0], results[1]] = [results[1], results[0]]
-    }
     res.send(results)
 })
 
