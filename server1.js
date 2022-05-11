@@ -7,17 +7,17 @@ const cors = require('cors');
 const url = 'http://localhost:8081'
 const openShiftURL = 'https://cloud-server-2-cloud-final.apps-crc.testing/'
 
-var cn = new Pool({
-    connectionString: DB_CONFIG,
-    ssl: false,
-})
-
 // var cn = new Pool({
-//     host: 'localhost',
-//     user: 'aleventis',
-//     port: '5432',
-//     database: 'cloud_final',
+//     connectionString: DB_CONFIG,
+//     ssl: false,
 // })
+
+var cn = new Pool({
+    host: 'localhost',
+    user: 'aleventis',
+    port: '5432',
+    database: 'cloud_final',
+})
 
 const app = express()
 app.use(cors({origin: true}))
@@ -73,7 +73,7 @@ app.get('/send', async (req, res) => {
 
     try {
         // send move to server 2
-        let gameResult = await axios.post(openShiftURL, {move: move})
+        let gameResult = await axios.post(url, {move: move})
         await updateDB(gameResult.data)
         res.send(gameResult.data)
     } catch (err) {
